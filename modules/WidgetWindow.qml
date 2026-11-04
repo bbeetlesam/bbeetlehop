@@ -10,7 +10,6 @@ PanelWindow {
 
     // Set below the screen if false, revealed if true
     property bool shown: false
-
     readonly property real cardWidthRatio: 0.5
     readonly property real cardHeightRatio: 0.7
 

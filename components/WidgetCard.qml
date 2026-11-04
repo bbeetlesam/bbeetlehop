@@ -1,44 +1,46 @@
 import QtQuick
 import qs.services
 
+// Parent container of WidgetCard
 Rectangle {
     id: card
 
-    property string title: "Bienvenue, Camomile"
-    property string subtitle: "We'll talk about it later."
     readonly property real radiusRatio: 0.025
+    readonly property real footerHeightRatio: 0.075
 
     radius: Math.round(width * radiusRatio)
     bottomLeftRadius: 0
     bottomRightRadius: 0
     color: Theme.background
-    border.width: 2
+    border.width: Metrics.borderWidth
     border.color: Theme.border
 
-    Column {
-        anchors.centerIn: parent
-        width: parent.width
-        spacing: 12
+    CardBody {
+        // Matches the Card's radius and border width to avoid clipping
+        topLeftRadius: Math.max(0, card.radius - card.border.width)
+        topRightRadius: Math.max(0, card.radius - card.border.width)
 
-        Text {
-            width: parent.width
-            horizontalAlignment: Text.AlignHCenter
-            text: card.title
-            color: Theme.accent
-            font.family: "Akt"
-            font.pixelSize: 30
-            font.weight: Font.DemiBold
-            clip: true
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: footer.top
+            topMargin: card.border.width
+            leftMargin: card.border.width
+            rightMargin: card.border.width
         }
-        Text {
-            width: parent.width
-            horizontalAlignment: Text.AlignHCenter
-            text: card.subtitle
-            color: Theme.text
-            font.family: "Akt"
-            font.pixelSize: 15
-            font.weight: Font.Normal
-            clip: true
+    }
+    CardFooter {
+        id: footer
+
+        height: Math.round(card.height * card.footerHeightRatio)
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            leftMargin: card.border.width
+            rightMargin: card.border.width
         }
     }
 }
