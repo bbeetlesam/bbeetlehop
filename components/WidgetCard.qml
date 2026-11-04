@@ -6,11 +6,9 @@ Rectangle {
 
     property string title: "Bienvenue, Camomile"
     property string subtitle: "We'll talk about it later."
+    readonly property real radiusRatio: 0.025
 
-    // WIP: all values are currently hardcoded
-    width: 700
-    height: 250
-    radius: 15
+    radius: Math.round(width * radiusRatio)
     bottomLeftRadius: 0
     bottomRightRadius: 0
     color: Theme.background

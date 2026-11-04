@@ -11,6 +11,9 @@ PanelWindow {
     // Set below the screen if false, revealed if true
     property bool shown: false
 
+    readonly property real cardWidthRatio: 0.5
+    readonly property real cardHeightRatio: 0.7
+
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
     focusable: false
@@ -40,6 +43,8 @@ PanelWindow {
     WidgetCard {
         id: card
 
+        width: Math.round(root.width * root.cardWidthRatio)
+        height: Math.round(root.height * root.cardHeightRatio)
         anchors.horizontalCenter: parent.horizontalCenter
         y: root.height - height * root.reveal
 
