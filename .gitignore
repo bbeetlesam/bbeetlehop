@@ -1,0 +1,7 @@
+# Quickshell generated files
+.qmlls.ini
+
+# Misc
+.zed/
+.dump/
+scripts/
