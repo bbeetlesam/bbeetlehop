@@ -19,4 +19,7 @@ separate window for each one.
 The beetle is small, the code is small, and the goal is the same: show a little, help a
 little, then leave your desktop alone.
 
-## We'll fill the rest later
+## License
+
+Bbeetlehop is licensed under the
+[GPLv3](https://github.com/bbeetlesam/bbeetlehop/blob/main/LICENSE).
