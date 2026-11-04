@@ -34,7 +34,7 @@ Rectangle {
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             text: footer.usernameText
-            color: Theme.text
+            color: Theme.textDefault
             font.family: Theme.fontFamily
             font.pixelSize: 20
             font.weight: Font.DemiBold
