@@ -48,24 +48,24 @@ PanelWindow {
         y: root.height - height * root.reveal
 
         onYChanged: if (inputRegion)
-                        inputRegion.changed()
+            inputRegion.changed()
     }
 
-    // Trigger from a keybind: quickshell ipc call widget toggle
-    // WIP: Only for testing
+    // Trigger from a keybind: quickshell ipc -c bbeetlehop call bbeetlehop toggle
+    // WIP: Needs more adjustments
     IpcHandler {
-        function hide(): void {
+        function hideWidget(): void { // unused yet
             root.shown = false;
         }
 
-        function show(): void {
+        function showWidget(): void { // unused yet
             root.shown = true;
         }
 
-        function toggle(): void {
+        function toggleWidget(): void {
             root.shown = !root.shown;
         }
 
-        target: "widget"
+        target: "bbeetlehop"
     }
 }
