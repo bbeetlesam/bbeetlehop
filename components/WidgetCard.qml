@@ -1,7 +1,7 @@
 import QtQuick
 import qs.services
 
-// Parent container of WidgetCard
+// Main container of Card
 Rectangle {
     id: card
 
@@ -15,6 +15,10 @@ Rectangle {
     border.width: Metrics.borderWidth
     border.color: Theme.border
 
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+    }
     CardBody {
         // Matches the Card's radius and border width to avoid clipping
         topLeftRadius: Math.max(0, card.radius - card.border.width)

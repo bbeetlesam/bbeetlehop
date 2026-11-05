@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
 import qs.components
 
 PanelWindow {
@@ -15,7 +16,11 @@ PanelWindow {
 
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
-    focusable: false
+
+    // Exclusive keyboard while shown so the panel owns all input
+    WlrLayershell.keyboardFocus: root.shown ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    // Overlay keeps the surface above other layer-shell surfaces
+    WlrLayershell.layer: WlrLayer.Overlay
 
     Behavior on reveal {
         NumberAnimation {
@@ -23,16 +28,35 @@ PanelWindow {
             easing.type: Easing.InOutQuad
         }
     }
-
-    // Clicks outside the card are passed through
     mask: Region {
         id: inputRegion
 
-        item: card
-        topLeftRadius: card.radius
-        topRightRadius: card.radius
+        item: root.shown ? backdrop : card
+        topLeftRadius: root.shown ? 0 : card.radius
+        topRightRadius: root.shown ? 0 : card.radius
     }
 
+    onShownChanged: {
+        if (inputRegion)
+            inputRegion.changed();
+
+        if (shown) {
+            Qt.callLater(() => {
+                card.forceActiveFocus();
+            });
+        }
+    }
+
+    // Full-screen input while shown so outside clicks dismiss the widget
+    MouseArea {
+        id: backdrop
+
+        anchors.fill: parent
+        enabled: root.shown
+        acceptedButtons: Qt.AllButtons
+
+        onClicked: widgetIpcHandler.hideWidget()
+    }
     anchors {
         bottom: true
         left: true
@@ -49,16 +73,23 @@ PanelWindow {
 
         onYChanged: if (inputRegion)
             inputRegion.changed()
+
+        // Hide/close the widget when ESC key is pressed
+        Keys.onEscapePressed: {
+            widgetIpcHandler.hideWidget();
+        }
     }
 
     // Trigger from a keybind: quickshell ipc -c bbeetlehop call bbeetlehop toggle
     // WIP: Needs more adjustments
     IpcHandler {
-        function hideWidget(): void { // unused yet
+        id: widgetIpcHandler
+
+        function hideWidget(): void {
             root.shown = false;
         }
 
-        function showWidget(): void { // unused yet
+        function showWidget(): void {
             root.shown = true;
         }
 
