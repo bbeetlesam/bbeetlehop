@@ -11,8 +11,8 @@ PanelWindow {
 
     // Set below the screen if false, revealed if true
     property bool shown: false
-    readonly property real cardWidthRatio: 0.5
-    readonly property real cardHeightRatio: 0.7
+    readonly property real cardWidthRatio: 0.6
+    readonly property real cardHeightRatio: 0.65
 
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
