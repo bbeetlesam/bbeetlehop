@@ -12,11 +12,15 @@ FocusScope {
     // Shown as this page's name in the sidebar
     readonly property string pageTitle: "Wallpaper"
 
+    // WIP: Make this configurable via external settings
     property int gap: 10
-    property int targetCellWidth: 200
 
-    readonly property int columns: Math.max(1, Math.floor(width / targetCellWidth))
-    readonly property real cellWidth: width / columns
+    // Tiles per row
+    // WIP: Make this configurable via external settings
+    property int columnCount: 3
+
+    readonly property int columns: Math.max(1, columnCount)
+    readonly property real cellWidth: grid.width / columns
     readonly property real cellHeight: Math.round((cellWidth - gap) / tileAspectRatio + gap)
     readonly property real tileAspectRatio:
         Screen.height > 0 ? Screen.width / Screen.height : 16 / 9
