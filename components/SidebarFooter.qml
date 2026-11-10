@@ -1,7 +1,7 @@
 import QtQuick
 import qs.services
 
-// Bottom (footer) section of WidgetCard
+// Bottom section of the Sidebar
 Rectangle {
     id: footer
 

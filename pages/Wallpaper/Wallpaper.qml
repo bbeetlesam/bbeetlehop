@@ -3,17 +3,23 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Window
 import qs.services
+import qs.services.Wallpaper
 
-// Scrollable grid of wallpapers selection
+// Wallpaper selection page
 FocusScope {
-    id: root
+    id: page
+
+    // Shown as this page's name in the sidebar
+    readonly property string pageTitle: "Wallpaper"
 
     property int gap: 10
     property int targetCellWidth: 200
+
     readonly property int columns: Math.max(1, Math.floor(width / targetCellWidth))
     readonly property real cellWidth: width / columns
     readonly property real cellHeight: Math.round((cellWidth - gap) / tileAspectRatio + gap)
-    readonly property real tileAspectRatio: Screen.height > 0 ? Screen.width / Screen.height : 16 / 9
+    readonly property real tileAspectRatio:
+        Screen.height > 0 ? Screen.width / Screen.height : 16 / 9
 
     // Keyboard-highlighted tile path; "" when nothing is highlighted
     readonly property string selectedPath: {
@@ -35,12 +41,21 @@ FocusScope {
     GridView {
         id: grid
 
-        anchors.fill: parent
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            topMargin: 24
+            leftMargin: 24
+            rightMargin: 24
+            bottomMargin: 24
+        }
         boundsBehavior: Flickable.StopAtBounds
-        cellHeight: root.cellHeight
-        cellWidth: root.cellWidth
+        cellHeight: page.cellHeight
+        cellWidth: page.cellWidth
         clip: true
-        // Holds keyboard focus once the window hands focus to this scope
+        // Holds keyboard focus once the window hands focus to this page
         focus: true
         // Arrow navigation is handled explicitly below
         keyNavigationEnabled: false
@@ -58,7 +73,7 @@ FocusScope {
 
             WallpaperItem {
                 anchors.fill: parent
-                anchors.margins: root.gap / 2
+                anchors.margins: page.gap / 2
                 current: Wallpapers.currentPath === tile.filePath
                 pending: Wallpapers.pendingPath === tile.filePath
                 selected: grid.activeFocus && tile.GridView.isCurrentItem
@@ -91,8 +106,8 @@ FocusScope {
         }
 
         // Return and keypad-Enter approve the highlighted tile
-        Keys.onReturnPressed: root.confirmSelection()
-        Keys.onEnterPressed: root.confirmSelection()
+        Keys.onReturnPressed: page.confirmSelection()
+        Keys.onEnterPressed: page.confirmSelection()
     }
 
     // Thin scroll indicator in the right side
@@ -100,10 +115,10 @@ FocusScope {
         id: scrollbar
 
         visible: grid.contentHeight > grid.height
-        x: root.width - width
-        y: grid.visibleArea.yPosition * root.height
+        x: page.width - width
+        y: grid.visibleArea.yPosition * page.height
         width: 3
-        height: Math.max(24, grid.visibleArea.heightRatio * root.height)
+        height: Math.max(24, grid.visibleArea.heightRatio * page.height)
         radius: width / 2
         color: Theme.border
     }

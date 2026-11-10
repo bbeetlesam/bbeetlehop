@@ -42,7 +42,7 @@ PanelWindow {
 
         if (shown) {
             Qt.callLater(() => {
-                card.wallpaperGrid.forceActiveFocus();
+                card.activePage.forceActiveFocus();
             });
         }
     }

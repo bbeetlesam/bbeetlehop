@@ -1,4 +1,5 @@
 import QtQuick
+import qs.pages.Wallpaper
 import qs.services
 
 // Main container of Card
@@ -8,8 +9,8 @@ Rectangle {
     readonly property real radiusRatio: 0.025
     readonly property real sidebarWidthRatio: 0.2
 
-    // Where the window's on-show keyboard focus lands
-    readonly property Item wallpaperGrid: body.wallpaperGrid
+    // The current page active in the card
+    readonly property Item activePage: page
 
     radius: Math.round(width * radiusRatio)
     bottomLeftRadius: 0
@@ -26,8 +27,11 @@ Rectangle {
         id: sidebar
 
         width: Math.round(card.width * card.sidebarWidthRatio)
-        // Matches the Card's radius and border width to avoid clipping
         topLeftRadius: Math.max(0, card.radius - card.border.width)
+
+        // WIP: Decorative index filled from the instantiated page
+        pageTitles: [page.pageTitle]
+        currentPage: page.pageTitle
 
         anchors {
             left: parent.left
@@ -38,11 +42,8 @@ Rectangle {
             bottomMargin: card.border.width
         }
     }
-    CardBody {
-        id: body
-
-        // Matches the Card's radius and border width to avoid clipping
-        topRightRadius: Math.max(0, card.radius - card.border.width)
+    Wallpaper {
+        id: page
 
         anchors {
             top: parent.top
