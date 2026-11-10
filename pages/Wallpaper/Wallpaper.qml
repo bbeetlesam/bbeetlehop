@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Window
 import qs.services
-import qs.services.Wallpaper
+import qs.pages.Wallpaper
 
 // Wallpaper selection page
 FocusScope {
