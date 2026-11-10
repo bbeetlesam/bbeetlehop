@@ -8,6 +8,9 @@ Rectangle {
     readonly property real radiusRatio: 0.025
     readonly property real footerHeightRatio: 0.075
 
+    // Where the window's on-show keyboard focus lands
+    readonly property Item wallpaperGrid: body.wallpaperGrid
+
     radius: Math.round(width * radiusRatio)
     bottomLeftRadius: 0
     bottomRightRadius: 0
@@ -20,6 +23,8 @@ Rectangle {
         acceptedButtons: Qt.AllButtons
     }
     CardBody {
+        id: body
+
         // Matches the Card's radius and border width to avoid clipping
         topLeftRadius: Math.max(0, card.radius - card.border.width)
         topRightRadius: Math.max(0, card.radius - card.border.width)

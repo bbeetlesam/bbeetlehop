@@ -8,12 +8,14 @@ Rectangle {
     property url source
     property bool current: false
     property bool pending: false
+    property bool selected: false
 
     signal activated
 
     color: Theme.backgroundSecondary
     border.width: Metrics.borderWidth
-    border.color: pending ? Theme.pending : (current ? Theme.textAccent : Theme.border)
+    // pending/current keep their colours; selected only marks normal tiles
+    border.color: pending ? Theme.pending : current ? Theme.textAccent : selected ? Theme.borderAccent : Theme.border
     clip: true
 
     Image {

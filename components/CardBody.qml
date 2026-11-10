@@ -7,6 +7,9 @@ Rectangle {
 
     property string title: "Wallpaper Selection"
 
+    // Exposed so the window can give the grid keyboard focus on show
+    readonly property alias wallpaperGrid: gallery
+
     color: "transparent"
 
     Column {
@@ -15,7 +18,6 @@ Rectangle {
         width: parent.width
         topPadding: 15
         bottomPadding: 15
-        // spacing: 12
 
         anchors {
             top: parent.top
@@ -32,6 +34,8 @@ Rectangle {
         }
     }
     WallpaperGrid {
+        id: gallery
+
         anchors {
             top: heading.bottom
             left: parent.left

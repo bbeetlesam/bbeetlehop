@@ -17,7 +17,7 @@ PanelWindow {
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
 
-    // Exclusive keyboard while shown so the panel owns all input
+    // Exclusive while shown; None when hidden releases the keyboard
     WlrLayershell.keyboardFocus: root.shown ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     // Overlay keeps the surface above other layer-shell surfaces
     WlrLayershell.layer: WlrLayer.Overlay
@@ -42,7 +42,7 @@ PanelWindow {
 
         if (shown) {
             Qt.callLater(() => {
-                card.forceActiveFocus();
+                card.wallpaperGrid.forceActiveFocus();
             });
         }
     }
@@ -80,7 +80,7 @@ PanelWindow {
         }
     }
 
-    // Trigger from a keybind: quickshell ipc -c bbeetlehop call bbeetlehop toggle
+    // Trigger from a keybind: quickshell ipc -c bbeetlehop call bbeetlehop toggleWidget
     // WIP: Needs more adjustments
     IpcHandler {
         id: widgetIpcHandler
