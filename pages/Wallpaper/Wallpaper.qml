@@ -89,12 +89,18 @@ FocusScope {
 
         // Other keys are not consumed, so Escape bubbles to the card
         Keys.onPressed: event => {
+            const count = Wallpapers.model.count;
+
             switch (event.key) {
             case Qt.Key_Left:
-                grid.moveCurrentIndexLeft();
+                // Wraps from the first tile back to the last
+                if (count > 0)
+                    grid.currentIndex = grid.currentIndex > 0 ? grid.currentIndex - 1 : count - 1;
                 break;
             case Qt.Key_Right:
-                grid.moveCurrentIndexRight();
+                // Wraps from the last tile forward to the first
+                if (count > 0)
+                    grid.currentIndex = grid.currentIndex < count - 1 ? grid.currentIndex + 1 : 0;
                 break;
             case Qt.Key_Up:
                 grid.moveCurrentIndexUp();

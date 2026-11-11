@@ -7,7 +7,7 @@ Rectangle {
     id: card
 
     readonly property real radiusRatio: 0.025
-    readonly property real sidebarWidthRatio: 0.2
+    readonly property real sidebarWidthRatio: 0.25
 
     // The current page active in the card
     readonly property Item activePage: page
