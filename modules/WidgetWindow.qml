@@ -3,16 +3,26 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import qs.components
+import qs.pages.Wallpaper
 
 PanelWindow {
     id: root
 
     property real reveal: shown ? 1 : 0
 
-    // Set below the screen if false, revealed if true
+    // Starts false so the reveal animates in and onShownChanged hands focus over
     property bool shown: false
+    // Set when hiding; the instance quits once it is fully hidden
+    property bool pendingQuit: false
     readonly property real cardWidthRatio: 0.6
     readonly property real cardHeightRatio: 0.65
+    readonly property real slideDuration: 150
+
+    // Quit only after the hide animation and any pending wallpaper transition
+    function maybeQuit() {
+        if (pendingQuit && !Wallpapers.transitioning && reveal === 0)
+            Qt.quit();
+    }
 
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
@@ -24,7 +34,7 @@ PanelWindow {
 
     Behavior on reveal {
         NumberAnimation {
-            duration: 200
+            duration: root.slideDuration
             easing.type: Easing.InOutQuad
         }
     }
@@ -36,6 +46,8 @@ PanelWindow {
         topRightRadius: root.shown ? 0 : card.radius
     }
 
+    // Spawned instances show themselves; starting hidden lets the reveal animate
+    Component.onCompleted: root.shown = true
     onShownChanged: {
         if (inputRegion)
             inputRegion.changed();
@@ -45,6 +57,17 @@ PanelWindow {
                 card.activePage.forceActiveFocus();
             });
         }
+    }
+    // Reveal animates through 0 exactly when the hide animation finishes
+    onRevealChanged: maybeQuit()
+
+    // The transition hold ends after a wallpaper application completes
+    Connections {
+        function onTransitioningChanged() {
+            root.maybeQuit();
+        }
+
+        target: Wallpapers
     }
 
     // Full-screen input while shown so outside clicks dismiss the widget
@@ -80,21 +103,19 @@ PanelWindow {
         }
     }
 
-    // Trigger from a keybind: quickshell ipc -c bbeetlehop call bbeetlehop toggleWidget
-    // WIP: Needs more adjustments
+    // Trigger from Quickshell's IPC
     IpcHandler {
         id: widgetIpcHandler
 
         function hideWidget(): void {
             root.shown = false;
+            root.pendingQuit = true;
+            root.maybeQuit();
         }
 
         function showWidget(): void {
+            root.pendingQuit = false;
             root.shown = true;
-        }
-
-        function toggleWidget(): void {
-            root.shown = !root.shown;
         }
 
         target: "bbeetlehop"
